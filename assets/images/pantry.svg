@@ -1,0 +1,21 @@
+<svg fill="#000000" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+  <g id="SVGRepo_iconCarrier">
+    <path d="M22,1
+             H3
+             a2,2,0,0,0-2,2
+             V21
+             a2,2,0,0,0,2,2
+             H21
+             a2,2,0,0,0,2-2
+             V3
+             A2,2,0,0,0,21,1
+             Z
+             M21,17H13V3h8Z
+             M3,3h8V17H3Z
+             M21,21H3V19H21Z
+             M10,9v2a1,1,0,0,1-2,0V9a1,1,0,0,1,2,0Z
+             m4,2V9a1,1,0,0,1,2,0v2a1,1,0,0,1-2,0Z"/>
+  </g>
+</svg>
