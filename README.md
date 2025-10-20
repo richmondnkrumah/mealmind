@@ -1,50 +1,99 @@
-# Welcome to your Expo app 👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+<div align="center">
+  <img src="[YOUR_LOGO_URL]" alt="MealMind Logo" width="150"/>
+  <h1>MealMind</h1>
+  <p><strong>An AI-powered meal prep assistant, currently under active development.</strong></p>
+  
+  <p>
+    <img alt="Status" src="https://img.shields.io/badge/status-in%20progress-yellow"/>
+    <img alt="License" src="https://img.shields.io/badge/license-MIT-blue"/>
+    <img alt="Contributions" src="https://img.shields.io/badge/contributions-welcome-orange"/>
+  </p>
+</div>
 
-## Get started
+<br>
 
-1. Install dependencies
+<div align="center">
+  <!-- INSTRUCTION: Replace this with a GIF of the current app state. -->
+  <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbDBoY2o1ZzU5bnBtc2M2emJiaXU4emc4bmEwZW1oNHNzbjc2aDlkcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKSjRrfIPjeiVyE/giphy.gif" alt="MealMind App Current Progress" width="300"/>
+</div>
 
-   ```bash
-   npm install
-   ```
+---
 
-2. Start the app
+## 🎯 The Vision: Solving "What's for Dinner?"
 
-   ```bash
-   npx expo start
-   ```
+The goal of MealMind is to leverage modern AI to restore calm and intention to the kitchen. This repository documents the journey of building an intelligent system that automates the most tedious parts of meal planning—from recipe discovery to smart shopping lists.
 
-In the output, you'll find options to open the app in a
+**This is a living project.** The features and setup instructions will evolve. The goal is to build transparently, sharing the process of creating a full-stack, AI-powered mobile application from the ground up.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## ✨ Feature Roadmap
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+This project is being built iteratively. Here is a look at the current features and what's planned next.
 
-## Get a fresh project
+#### ✅ **Core Features (Implemented)**
+*   **User Onboarding Flow:** A smooth, 3-step introduction to the app's value.
+*   **Authentication:** Secure user sign-up and login using Supabase Auth.
+*   **UI Foundation:** A robust 5-tab navigation structure built with Expo.
+*   **Profile Management:** Basic user profile creation and preference storage in PostgreSQL.
 
-When you're ready, run:
+#### 🚀 **Up Next (In Progress & Planned)**
+*   **AI Meal Plan Generation:** Integrating with a Text AI to generate the first meal plans.
+*   **AI Vision Pantry Scanner:** Integrating the Clarifai API to enable inventory scanning.
+*   **Smart Shopping List Logic:** Building the system to compare the meal plan with the pantry.
+*   **Plan History:** Saving and viewing previously generated meal plans.
 
-```bash
-npm run reset-project
-```
+## 🛠️ Tech Stack
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+MealMind is being built on a modern, full-stack serverless architecture.
 
-## Learn more
+| Component | Technology |
+| :--- | :--- |
+| **Mobile Frontend** | Expo (React Native), TypeScript |
+| **Backend & Auth** | Supabase (Auth, Postgres, Storage) |
+| **Serverless Logic** | Supabase Edge Functions (Deno) |
+| **Vision AI** | Clarifai API |
+| **Text Generation** | OpenAI GPT API |
 
-To learn more about developing your project with Expo, look at the following resources:
+## 🚀 Initial Setup
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+> **Note:** As this project is under active development, these steps may change. This guide covers the initial setup to get the foundational app running.
 
-## Join the community
+### Prerequisites
 
-Join our community of developers creating universal apps.
+*   Node.js (v18 or higher) & NPM/Yarn
+*   Supabase Account & CLI
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### Local Installation
+
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/your-username/mealmind.git
+    cd mealmind
+    ```
+
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+
+3.  **Set up Supabase:**
+    *   Link your project using the Supabase CLI: `supabase link --project-ref <your-project-ref>`
+    *   Push the initial database schema: `supabase db push`
+
+4.  **Environment Variables:**
+    *   Create a `.env` file by copying `.env.example`.
+    *   Fill in your Supabase URL and Anon Key. This is all that's needed to run the UI and authentication.
+    ```
+    EXPO_PUBLIC_SUPABASE_URL="YOUR_SUPABASE_URL"
+    EXPO_PUBLIC_SUPABASE_ANON_KEY="YOUR_SUPABASE_ANON_KEY"
+    ```
+
+5.  **Run the application:**
+    ```bash
+    npx expo start
+    ```
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome! As this project is a learning journey, feedback from the community is highly encouraged. Please feel free to open an issue to discuss what you would like to change.
+
