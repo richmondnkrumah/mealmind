@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import SignIn from "@/components/SignIn";
 import SignUp from "@/components/SignUp";
 import { Image } from "expo-image";
+import AuthHeader from "@/components/AuthHeader";
 
 const AuthScreen = () => {
   const [authToggle, setAuthToggle] = React.useState<"signIn" | "signUp">(
@@ -13,7 +14,7 @@ const AuthScreen = () => {
   const handleAuthChangeToggle = (value: "signIn" | "signUp") => {
     setAuthToggle(value);
   };
-  
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.logoContainer}>
@@ -22,13 +23,25 @@ const AuthScreen = () => {
           style={styles.logo}
           contentFit="contain"
         />
-        <View style={styles.textContainer}>
-          <Text style={styles.title}>Welcome Back</Text>
-          <Text style={styles.subTitle}>Experience AI meal Assitant for everyone</Text>
-        </View>
+        {authToggle === "signIn" && (
+          <AuthHeader
+            title="Welcome Back"
+            subTitle="Experience AI Meal Assistant"
+          />
+        )}
+        {authToggle === "signUp" && (
+          <AuthHeader
+            title="Create Account"
+            subTitle="Join Us for with just a single click, no cost"
+          />
+        )}
       </View>
-      {authToggle === "signIn" && <SignIn authChangeHandler={handleAuthChangeToggle} />}
-      {authToggle === "signUp" && <SignUp authChangeHandler={handleAuthChangeToggle} />}
+      {authToggle === "signIn" && (
+        <SignIn authChangeHandler={handleAuthChangeToggle} />
+      )}
+      {authToggle === "signUp" && (
+        <SignUp authChangeHandler={handleAuthChangeToggle} />
+      )}
     </SafeAreaView>
   );
 };
@@ -52,17 +65,4 @@ const styles = StyleSheet.create({
     width: 70,
     height: 80,
   },
-  textContainer: {
-    alignItems: "center"
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: "bold",
-  },
-  subTitle: {
-    fontSize: 18, 
-    color: "#794716",
-    fontWeight: "600",
-  }
-  
 });
