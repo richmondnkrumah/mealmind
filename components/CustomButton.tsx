@@ -3,8 +3,8 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   useWindowDimensions,
-} from 'react-native';
-import React from 'react';
+} from "react-native";
+import React from "react";
 import Animated, {
   AnimatedRef,
   SharedValue,
@@ -95,7 +95,7 @@ const CustomButton = ({flatListRef, flatListIndex, dataLength, x}: Props) => {
           Get Started
         </Animated.Text>
         <Animated.Image
-          source={require('../assets/images/ArrowIcon.png')}
+          source={require("../assets/images/ArrowIcon.png")}
           style={[styles.arrow, arrowAnimationStyle]}
         />
       </Animated.View>
@@ -107,15 +107,15 @@ export default CustomButton;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#CD7926',
+    backgroundColor: "#CD7926",
     padding: 10,
     borderRadius: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
   },
   arrow: {
-    position: 'absolute',
+    position: "absolute",
   },
-  textButton: {color: 'white', fontSize: 16, position: 'absolute'},
+  textButton: { color: "white", fontSize: 16, position: "absolute" },
 });
