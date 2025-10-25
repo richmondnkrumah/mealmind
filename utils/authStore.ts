@@ -1,5 +1,7 @@
 import {persist, createJSONStorage} from "zustand/middleware";
 import { getItem,setItem,deleteItemAsync } from "expo-secure-store";
+import {create} from "zustand";
+import { Session } from "@supabase/supabase-js";
 
 type UserState ={
     isLoggedIn: boolean;
@@ -7,7 +9,10 @@ type UserState ={
     logIn: () => void;
     logOut: () => void;
     resetOnboarding: () => void
-    completeOnboarding: () => void
+    completeOnboarding: () => void,
+    session: Session | null;
+    saveUserSession: (session: Session) => void;
+    removeUserSession: () => void;
 
 }
 export const useAuthStore = create<UserState>()(
@@ -19,6 +24,9 @@ export const useAuthStore = create<UserState>()(
             hasCompletedOnboarding: false,
             resetOnboarding: () => set(() => ({ hasCompletedOnboarding: false })),
             completeOnboarding: () => set(() => ({ hasCompletedOnboarding: true })),
+            session: null,
+            saveUserSession: (session: Session) => set(() => ({ session: session, isLoggedIn: !!session  })),
+            removeUserSession: () => set(() => ({ session: null, isLoggedIn: false })),
         }),
         {
             name: "auth-storage",
