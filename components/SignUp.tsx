@@ -1,53 +1,41 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  AppState,
-  Pressable,
-  Alert,
-} from "react-native";
-import { useState } from "react";
-import AuthInput from "./AuthInput";
+import { StyleSheet, Text, View, Pressable, Alert } from "react-native";
+import React from "react";
 import { Image } from "expo-image";
-import { useRouter } from "expo-router";
+import AuthInput from "./AuthInput";
+import { router, useRouter } from "expo-router";
 import { supabase } from "@/lib/supabase";
 import { useAuthStore } from "@/utils/authStore";
 
-AppState.addEventListener("change", (state) => {
-  if (state === "active") {
-    supabase.auth.startAutoRefresh();
-  } else {
-    supabase.auth.stopAutoRefresh();
-  }
-});
-
-type SignInProps = {
+type SignUpProps = {
   authChangeHandler: (value: "signIn" | "signUp") => void;
 };
 
-const SignIn = ({ authChangeHandler }: SignInProps) => {
-  const [hidePassword, setHidePassword] = useState(true);
-  const router = useRouter();
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+const SignUp = ({ authChangeHandler }: SignUpProps) => {
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [confirmPassword, setConfirmPassword] = React.useState("");
+  const [hideConfirmPassword, setHideConfirmPassword] = React.useState(true);
+  const [hidePassword, setHidePassword] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
   const { saveUserSession } = useAuthStore();
-
-  async function signInWithEmail() {
+  async function signUpWithEmail() {
+    if (password !== confirmPassword) {
+      Alert.alert("Passwords do not match");
+      return;
+    }
     setLoading(true);
-    const { error,data } = await supabase.auth.signInWithPassword({
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.signUp({
       email: email,
       password: password,
     });
-    saveUserSession(data.session!)
+    saveUserSession(session!);
     router.replace("/(tabs)/plan");
-    
     if (error) Alert.alert(error.message);
     setLoading(false);
-    
   }
- 
 
   return (
     <View>
@@ -91,8 +79,38 @@ const SignIn = ({ authChangeHandler }: SignInProps) => {
           </Pressable>
         }
       />
-      <Pressable disabled={loading} onPress={() => signInWithEmail()} style={styles.signButton}>
-        <Text style={styles.buttonText}>Sign In</Text>
+      <AuthInput
+        title="Password Confirmation"
+        placeholder="Confirm your password"
+        secureTextEntry={hideConfirmPassword}
+        value={confirmPassword}
+        onChangeText={(text) => setConfirmPassword(text)}
+        leftIcon={
+          <Image
+            source={require("../assets/images/lock.svg")}
+            style={{ width: 25, height: 20 }}
+          />
+        }
+        rightIcon={
+          <Pressable
+            onPress={() => setHideConfirmPassword(!hideConfirmPassword)}
+          >
+            {hideConfirmPassword ? (
+              <Image
+                source={require("../assets/images/eye-open.svg")}
+                style={{ width: 25, height: 20 }}
+              />
+            ) : (
+              <Image
+                source={require("../assets/images/eye-closed.svg")}
+                style={{ width: 25, height: 20 }}
+              />
+            )}
+          </Pressable>
+        }
+      />
+      <Pressable onPress={() => signUpWithEmail()} style={styles.signButton}>
+        <Text style={styles.buttonText}>Sign Up</Text>
         <Image
           source={require("../assets/images/arrow-right.svg")}
           style={{ width: 30, height: 20, tintColor: "white" }}
@@ -117,30 +135,19 @@ const SignIn = ({ authChangeHandler }: SignInProps) => {
       </View>
       <View style={styles.bottomContainer}>
         <View style={styles.bottomTextContainer}>
-          <Text>Dont have an account?</Text>
-          <Pressable onPress={() => authChangeHandler("signUp")}>
+          <Text>Already have an account?</Text>
+          <Pressable onPress={() => authChangeHandler("signIn")}>
             <Text style={{ color: "blue", textDecorationLine: "underline" }}>
-              Sign Up
+              Sign in
             </Text>
           </Pressable>
         </View>
-        <Pressable onPress={() => router.push("/auth/forgot")}>
-          <Text
-            style={{
-              textAlign: "center",
-              color: "blue",
-              textDecorationLine: "underline",
-            }}
-          >
-            Forgot Password
-          </Text>
-        </Pressable>
       </View>
     </View>
   );
 };
 
-export default SignIn;
+export default SignUp;
 
 const styles = StyleSheet.create({
   signButton: {
