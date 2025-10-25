@@ -12,9 +12,10 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
   withTiming,
-} from 'react-native-reanimated';
-import {useNavigation} from '@react-navigation/native';
-import {OnboardingData} from '../constants/onboarding';
+} from "react-native-reanimated";
+import { OnboardingData } from "../constants/onboarding";
+import { useRouter } from "expo-router";
+import { useAuthStore } from "@/utils/authStore";
 
 type Props = {
   dataLength: number;
@@ -23,10 +24,20 @@ type Props = {
   x: SharedValue<number>;
 };
 
-const CustomButton = ({flatListRef, flatListIndex, dataLength, x}: Props) => {
-  const {width: SCREEN_WIDTH} = useWindowDimensions();
-  const navigation = useNavigation();
+const CustomButton = ({ flatListRef, flatListIndex, dataLength, x }: Props) => {
+  const router = useRouter();
+  const {completeOnboarding} = useAuthStore()
 
+  const handleOnboardingComplete = async () => {
+      {
+      if (flatListIndex.value < dataLength - 1) {
+        flatListRef.current?.scrollToIndex({ index: flatListIndex.value + 1 });
+      } else {
+        completeOnboarding()
+        router.replace("/auth");
+      }
+    }
+  };
   const buttonAnimationStyle = useAnimatedStyle(() => {
     return {
       width:
@@ -68,29 +79,21 @@ const CustomButton = ({flatListRef, flatListIndex, dataLength, x}: Props) => {
       ],
     };
   });
-  const animatedColor = useAnimatedStyle(() => {
-    const backgroundColor = interpolateColor(
-      x.value,
-      [0, SCREEN_WIDTH, 2 * SCREEN_WIDTH],
-      ['#005b4f', '#1e2169', '#F15937'],
-    );
+  // const animatedColor = useAnimatedStyle(() => {
+  //   const backgroundColor = interpolateColor(
+  //     x.value,
+  //     [0, SCREEN_WIDTH, 2 * SCREEN_WIDTH],
+  //     ['#005b4f', '#1e2169', '#F15937'],
+  //   );
 
-    return {
-      backgroundColor: backgroundColor,
-    };
-  });
+  //   return {
+  //     backgroundColor: backgroundColor,
+  //   };
+  // });
 
   return (
-    <TouchableWithoutFeedback
-      onPress={() => {
-        if (flatListIndex.value < dataLength - 1) {
-          flatListRef.current?.scrollToIndex({index: flatListIndex.value + 1});
-        } else {
-          navigation.goBack();
-        }
-      }}>
-      <Animated.View
-        style={[styles.container, buttonAnimationStyle, animatedColor]}>
+    <TouchableWithoutFeedback onPress={handleOnboardingComplete}>
+      <Animated.View style={[styles.container, buttonAnimationStyle]}>
         <Animated.Text style={[styles.textButton, textAnimationStyle]}>
           Get Started
         </Animated.Text>

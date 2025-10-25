@@ -21,9 +21,24 @@ export default function RootLayout() {
       saveUserSession(session!);
     });
   }, []);
-  
-  return <Stack>
-    <Stack.Screen name="onboarding" options={{ headerShown: false }}  />
-    {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }}  /> */}
-  </Stack>
+  useEffect(() => {
+    console.log(isLoggedIn, hasCompletedOnboarding);
+    if (hideSplash) {
+      SplashScreen.hide();
+    }
+  }, [hideSplash]);
+
+  return (
+    <Stack>
+      <Stack.Protected guard={isLoggedIn}>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      </Stack.Protected>
+      <Stack.Protected guard={!hasCompletedOnboarding}>
+        <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+      </Stack.Protected>
+      <Stack.Protected guard={!isLoggedIn && hasCompletedOnboarding}>
+        <Stack.Screen name="auth" options={{ headerShown: false }} />
+      </Stack.Protected>
+    </Stack>
+  );
 }
