@@ -21,14 +21,7 @@ export default function RootLayout() {
       saveUserSession(session!);
     });
   }, []);
-  useEffect(() => {
-    if(!toHide){
-      setTimeout(()=>{
-        SplashScreen.hide()
-        SetToHide(true)
-      },2000)
-    }
-  },[toHide])
+  
   return <Stack>
     <Stack.Screen name="onboarding" options={{ headerShown: false }}  />
     {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }}  /> */}
