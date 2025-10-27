@@ -35,38 +35,9 @@ const RenderItem = ({ index, x, item }: Props) => {
     };
   });
 
-  const circleAnimation = useAnimatedStyle(() => {
-    const scale = interpolate(
-      x.value,
-      [
-        (index - 1) * SCREEN_WIDTH,
-        index * SCREEN_WIDTH,
-        (index + 1) * SCREEN_WIDTH,
-      ],
-      [1, 4, 4],
-      Extrapolation.CLAMP
-    );
-
-    return {
-      transform: [{ scale: scale }],
-    };
-  });
-
   return (
     <View style={[styles.itemContainer, { width: SCREEN_WIDTH }]}>
-      <View style={styles.circleContainer}>
-        <Animated.View
-          style={[
-            {
-              width: SCREEN_WIDTH,
-              height: SCREEN_WIDTH,
-              borderRadius: SCREEN_WIDTH / 2,
-              backgroundColor: "#fff",
-            },
-            circleAnimation,
-          ]}
-        />
-      </View>
+      
       <View
         style={{
           position: "relative",
@@ -130,7 +101,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-around",
     alignItems: "center",
-    marginBottom: 80,
+    paddingBottom: 80,
+    backgroundColor:'#FFF'
   },
   itemText: {
     textAlign: "center",
