@@ -28,8 +28,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   subTitle: {
-    fontSize: 18, 
-    color: "#794716",
+    fontSize: 14, 
+    color: "gray",
     fontWeight: "600",
+    textAlign: "center",
   }
 });

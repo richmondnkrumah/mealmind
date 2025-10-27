@@ -23,13 +23,13 @@ const AuthInput = ({
   const [isFocused, setIsFocused] = React.useState(false);
   return (
     <Pressable style={[styles.container]}>
-      <Text style={styles.title}>{title}</Text>
       <Pressable
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         style={[
           styles.innerContainer,
-          isFocused && { borderColor: "#CD7926", borderWidth: 2 },
+
+          isFocused && { borderColor: "#CD7926" },
         ]}
       >
         {leftIcon}
@@ -57,15 +57,18 @@ const styles = StyleSheet.create({
   innerContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginVertical: 10,
     gap: 10,
-    borderRadius: 10,
-    padding: 12,
-    backgroundColor: "#E0E0E0",
+    borderRadius: 60,
+    // padding: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    backgroundColor: "#F5F5F5",
+    borderWidth: 0.5,
+    borderColor: "#F5F5F5",
   },
   title: {
     fontWeight: "bold",
-    fontSize: 16,
+    fontSize: 14,
   },
   input: {
     flex: 1,
