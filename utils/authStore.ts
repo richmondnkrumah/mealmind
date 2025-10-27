@@ -2,11 +2,11 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import { getItem, setItem, deleteItemAsync } from "expo-secure-store";
 import { create } from "zustand";
 import { Session, User } from "@supabase/supabase-js";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "../lib/supabase.ts";
 
 interface Profile {
   id: string;
-  preference: object | null;
+  preferences: object | null;
   inventory: string[] | null;
 }
 
@@ -23,15 +23,15 @@ interface UserState {
   profile: Profile | null;
   fetchProfile: () => Promise<void>;
   user: User | null;
-  isLoading: boolean;
+  isInventoryLoading: boolean
 }
 export const useAuthStore = create<UserState>()(
   persist<UserState>(
     (set, get) => ({
       isLoggedIn: false,
       profile: null,
+      isInventoryLoading: false,
       user: null,
-      isLoading: true,
       logIn: () => set(() => ({ isLoggedIn: true })),
       logOut: () => set(() => ({ isLoggedIn: false })),
       hasCompletedOnboarding: false,
@@ -39,24 +39,22 @@ export const useAuthStore = create<UserState>()(
       completeOnboarding: () => set(() => ({ hasCompletedOnboarding: true })),
       session: null,
       saveUserSession: (session: Session) =>
-        set(() => ({ session: session, isLoggedIn: !!session })),
+        set(() => ({ session: session, isLoggedIn: !!session, user: session?.user || null })),
       removeUserSession: () =>
         set(() => ({ session: null, isLoggedIn: false })),
       fetchProfile: async () => {
         const user = get().user;
         if (!user) {
-          set({ isLoading: false });
           return;
         }
-
-        set({ isLoading: true });
+        set({ isInventoryLoading: true });
         try {
           const { data, error, status } = await supabase
             .from("profiles")
-            .select(`id, preference, inventory`)
+            .select(`id, preferences, inventory`)
             .eq("id", user.id)
             .single();
-
+          console.log(data, "fetched profile data");
           if (error && status !== 406) {
             throw error;
           }
@@ -66,8 +64,9 @@ export const useAuthStore = create<UserState>()(
           }
         } catch (error) {
           console.error("Error fetching profile:", error);
-        } finally {
-          set({ isLoading: false });
+        }
+        finally {
+          set({ isInventoryLoading: false });
         }
       },
     }),
