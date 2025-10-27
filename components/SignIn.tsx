@@ -5,8 +5,9 @@ import {
   AppState,
   Pressable,
   Alert,
+  Platform,
 } from "react-native";
-import { useState } from "react";
+import React, { useState } from "react";
 import AuthInput from "./AuthInput";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
@@ -31,29 +32,33 @@ const SignIn = ({ authChangeHandler }: SignInProps) => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { saveUserSession, fetchProfile } = useAuthStore();
   const [loading, setLoading] = useState(false);
-  const { saveUserSession } = useAuthStore();
-
   async function signInWithEmail() {
-    setLoading(true);
-    const { error,data } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
-    });
-    saveUserSession(data.session!)
-    router.replace("/(tabs)/plan");
-    
-    if (error) Alert.alert(error.message);
-    setLoading(false);
-    
+    try {
+      setLoading(true);
+      const { error, data } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+      });
+      saveUserSession(data.session!);
+      fetchProfile();
+      router.replace("/(tabs)/plan");
+
+      if (error) throw error;
+    } catch (error) {
+      console.log("Error signing in:", error);
+      Alert.alert("Error signing in. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }
- 
 
   return (
     <View>
       <AuthInput
-        title="Email"
-        placeholder="johndoe@gmail.com"
+        title=""
+        placeholder="Email Address"
         value={email}
         onChangeText={(text) => setEmail(text)}
         leftIcon={
@@ -64,8 +69,8 @@ const SignIn = ({ authChangeHandler }: SignInProps) => {
         }
       />
       <AuthInput
-        title="Password"
-        placeholder="Enter your password"
+        title=""
+        placeholder="Password"
         secureTextEntry={hidePassword}
         value={password}
         onChangeText={(text) => setPassword(text)}
@@ -77,7 +82,7 @@ const SignIn = ({ authChangeHandler }: SignInProps) => {
         }
         rightIcon={
           <Pressable onPress={() => setHidePassword(!hidePassword)}>
-            {hidePassword ? (
+            {!hidePassword ? (
               <Image
                 source={require("../assets/images/eye-open.svg")}
                 style={{ width: 25, height: 20 }}
@@ -91,50 +96,59 @@ const SignIn = ({ authChangeHandler }: SignInProps) => {
           </Pressable>
         }
       />
-      <Pressable disabled={loading} onPress={() => signInWithEmail()} style={styles.signButton}>
-        <Text style={styles.buttonText}>Sign In</Text>
-        <Image
-          source={require("../assets/images/arrow-right.svg")}
-          style={{ width: 30, height: 20, tintColor: "white" }}
-        />
-      </Pressable>
-      <View style={styles.separator} />
-      <View style={styles.altSignContainer}>
-        <Pressable style={styles.altSignCard}>
-          <Image
-            source={require("../assets/images/google.svg")}
-            style={{ width: 30, height: 20, flex: 1 }}
-            contentFit="contain"
-          />
-        </Pressable>
-        <Pressable style={styles.altSignCard}>
-          <Image
-            contentFit="contain"
-            source={require("../assets/images/apple.svg")}
-            style={{ width: 30, height: 20, flex: 1 }}
-          />
-        </Pressable>
-      </View>
-      <View style={styles.bottomContainer}>
-        <View style={styles.bottomTextContainer}>
-          <Text>Dont have an account?</Text>
-          <Pressable onPress={() => authChangeHandler("signUp")}>
-            <Text style={{ color: "blue", textDecorationLine: "underline" }}>
-              Sign Up
-            </Text>
-          </Pressable>
-        </View>
+      <View>
         <Pressable onPress={() => router.push("/auth/forgot")}>
           <Text
             style={{
-              textAlign: "center",
-              color: "blue",
-              textDecorationLine: "underline",
+              textAlign: "right",
+              color: "#CD7926",
+              fontSize: 13
             }}
           >
             Forgot Password
           </Text>
         </Pressable>
+      </View>
+      <Pressable
+        disabled={loading}
+        onPress={() => signInWithEmail()}
+        style={[styles.signButton, loading && { backgroundColor: "gray" }]}
+      >
+        <Text style={styles.buttonText}>Login</Text>
+      </Pressable>
+
+      <View style={styles.bottomContainer}>
+        <View style={styles.bottomTextContainer}>
+          <Text>Don't have an account?</Text>
+          <Pressable onPress={() => authChangeHandler("signUp")}>
+            <Text style={{ color: "#CD7926" }}>Sign Up here</Text>
+          </Pressable>
+        </View>
+      </View>
+      <View style={styles.separatorContainer}>
+        <View style={styles.separator} />
+        <Text>Or Continue with</Text>
+        <View style={styles.separator} />
+      </View>
+      <View style={styles.altSignContainer}>
+        {Platform.OS === "ios" && (
+          <Pressable style={styles.altSignCard}>
+            <Image
+              contentFit="contain"
+              source={require("../assets/images/apple.svg")}
+              style={{ width: 30, height: 20, flex: 1 }}
+            />
+          </Pressable>
+        )}
+        {Platform.OS === "android" && (
+          <Pressable style={styles.altSignCard}>
+            <Image
+              source={require("../assets/images/google.svg")}
+              style={{ width: 30, height: 20, flex: 1 }}
+              contentFit="contain"
+            />
+          </Pressable>
+        )}
       </View>
     </View>
   );
@@ -148,8 +162,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#CD7926",
-    padding: 18,
-    borderRadius: 10,
+    padding: 15,
+    borderRadius: 60,
     marginTop: 20,
     gap: 10,
   },
@@ -158,22 +172,33 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
   },
+  separatorContainer: {
+    marginVertical: 30,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: "center",
+    alignItems: 'center',
+    gap: 10
+  },
   separator: {
     height: 1,
-    backgroundColor: "gray",
-    marginVertical: 20,
+    backgroundColor: "#F5F5F5",
+    flex: 1
   },
   altSignContainer: {
     flexDirection: "row",
     gap: 10,
     height: 60,
-  },
-  altSignCard: {
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 10,
-    backgroundColor: "#E0E0E0",
-    flex: 1,
+  },
+  altSignCard: {
+    borderRadius: "100%",
+    backgroundColor: "#F5F5F5",
+    width: 60,
+    height: 60,
+    justifyContent: "center",
+    alignItems: "center",
   },
   bottomContainer: {
     gap: 10,
