@@ -17,22 +17,18 @@ const AuthScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.logoContainer}>
-        <Image
-          source={require("../../assets/images/icon.png")}
-          style={styles.logo}
-          contentFit="contain"
-        />
+      <View style={styles.headerContainer}>
+        
         {authToggle === "signIn" && (
           <AuthHeader
-            title="Welcome Back"
-            subTitle="Experience AI Meal Assistant"
+            title="Log in"
+            subTitle="Sign in to your account to experience the best AI Meal Assistant"
           />
         )}
         {authToggle === "signUp" && (
           <AuthHeader
             title="Create Account"
-            subTitle="Join Us for with just a single click, no cost"
+            subTitle="Create a new account to get started and enjoy your personalized meal assistant"
           />
         )}
       </View>
@@ -51,18 +47,13 @@ export default AuthScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: "90%",
-    marginHorizontal: "auto",
-    marginTop: 60,
+    paddingTop: 60,
+    backgroundColor:'#fff',
+    paddingHorizontal: 25
   },
-  logoContainer: {
-    height: 150,
+  headerContainer: {
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 30,
-  },
-  logo: {
-    width: 70,
-    height: 80,
+    marginBottom: 40,
   },
 });
