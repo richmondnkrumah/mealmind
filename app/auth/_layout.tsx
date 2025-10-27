@@ -7,9 +7,11 @@ const AuthLayout = () => {
     <Stack >
       <Stack.Screen name="index" options={{
         headerShown: false
-      }} />
+}} />
       <Stack.Screen name="forgot" options={{
-        title: ""
+        title: "",
+        headerShadowVisible: false
+        
       }} />
     </Stack>
 
