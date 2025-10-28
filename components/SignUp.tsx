@@ -154,7 +154,7 @@ const SignUp = ({ authChangeHandler }: SignUpProps) => {
       </View>
       <View style={styles.separatorContainer}>
         <View style={styles.separator} />
-        <Text>Or Continue with</Text>
+        <Text>or continue with</Text>
         <View style={styles.separator} />
       </View>
       <View style={styles.altSignContainer}>
@@ -201,7 +201,6 @@ const styles = StyleSheet.create({
   },
   separatorContainer: {
     marginVertical: 30,
-    flex: 1,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",

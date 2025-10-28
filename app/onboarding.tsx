@@ -5,8 +5,8 @@ import Animated, {
   useAnimatedScrollHandler,
   useAnimatedRef,
 } from 'react-native-reanimated';
-import data, {OnboardingData} from '../constants/onboarding';
-import Pagination from '../components/Pagination';
+import data, {OnboardingData} from '@/constants/onboarding';
+import Pagination from '@/components/Pagination';
 import CustomButton from '../components/CustomButton';
 import RenderItem from '../components/RenderItem';
 

@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { supabase } from "@/lib/supabase";
-import { useAuthStore } from "@/utils/authStore";
+import { supabase } from "@/lib/supabase.ts";
+import { useAuthStore } from "@/utils/authStore.ts";
 
 const settings = () => {
   const {removeUserSession} = useAuthStore();
