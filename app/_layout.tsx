@@ -39,6 +39,11 @@ export default function RootLayout() {
       <Stack.Protected guard={!isLoggedIn && hasCompletedOnboarding}>
         <Stack.Screen name="auth" options={{ headerShown: false }} />
       </Stack.Protected>
+      <Stack.Protected guard={isLoggedIn}>
+        <Stack.Screen name="profile" options={{
+          headerShown: false
+        }}/>
+      </Stack.Protected>
     </Stack>
   );
 }
