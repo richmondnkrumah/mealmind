@@ -6,6 +6,7 @@ import Animated, {
   interpolate,
   useAnimatedStyle,
 } from 'react-native-reanimated';
+import { PRIMARY } from "@/constants/colors";
 
 type Props = {
   index: number;
@@ -56,7 +57,7 @@ const Dot = ({index, x}: Props) => {
   // });
 
   return (
-    <Animated.View style={[styles.dots, animatedDotStyle, {backgroundColor: '#CD7926'}]} />
+    <Animated.View style={[styles.dots, animatedDotStyle, {backgroundColor: PRIMARY}]} />
   );
 };
 

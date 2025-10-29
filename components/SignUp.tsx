@@ -12,6 +12,7 @@ import AuthInput from "./AuthInput";
 import { router, useRouter } from "expo-router";
 import { supabase } from "@/lib/supabase";
 import { useAuthStore } from "@/utils/authStore";
+import { PRIMARY } from "@/constants/colors";
 
 type SignUpProps = {
   authChangeHandler: (value: "signIn" | "signUp") => void;
@@ -188,7 +189,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#CD7926",
+    backgroundColor:PRIMARY,
     padding: 15,
     borderRadius: 60,
     marginTop: 20,

@@ -1,25 +1,26 @@
-import { Tabs, router } from "expo-router";
-import {
-  Modal,
-  View,
-  Pressable,
-  StyleSheet,
-  TouchableOpacity,
-  Alert,
-  ActivityIndicator,
-  Text,
-} from "react-native";
-import { BlurView } from "expo-blur";
-import { Ionicons } from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker";
+import { PRIMARY } from "@/constants/colors";
 import { supabase } from "@/lib/supabase";
 import { useAuthStore } from "@/utils/authStore";
+import { Ionicons } from "@expo/vector-icons";
+import { BlurView } from "expo-blur";
+import * as ImagePicker from "expo-image-picker";
+import { Tabs, router } from "expo-router";
 import React, { useState } from "react";
+import {
+  ActivityIndicator,
+  Alert,
+  Modal,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 // --- Icon components remain the same ---
 const PlanIcon = () => <Ionicons name="home-outline" size={24} color="gray" />;
 const ListIcon = () => <Ionicons name="list-outline" size={24} color="gray" />;
-const GenerateIcon = () => <Ionicons name="add-circle" size={32} color="#CD7926" />;
+const GenerateIcon = () => <Ionicons name="add-circle" size={32} color={PRIMARY} />;
 const PantryIcon = () => <Ionicons name="cube-outline" size={24} color="gray" />;
 const SettingsIcon = () => <Ionicons name="settings-outline" size={24} color="gray" />;
 
@@ -133,7 +134,7 @@ const TabsLayout = () => {
     <>
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: "#CD7926",
+          tabBarActiveTintColor: "PRIMARY",
           headerShown: false,
         }}
       >
@@ -199,7 +200,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   actionButton: {
-    backgroundColor: "#CD7926",
+    backgroundColor: PRIMARY,
     width: 60,
     height: 60,
     borderRadius: 30,
@@ -232,33 +233,33 @@ export default TabsLayout;
 //   return <NativeTabs>
 //     <NativeTabs.Trigger name="plan">
 //       <Label selectedStyle={{
-//         color: '#CD7926'
+//         color: 'PRIMARY'
 //       }}>Plan</Label>
-//       <Icon selectedColor={'#CD7926'} src={require("../../assets/images/plan.svg")} />
+//       <Icon selectedColor={'PRIMARY'} src={require("../../assets/images/plan.svg")} />
 //     </NativeTabs.Trigger>
 //     <NativeTabs.Trigger name="list">
 //       <Label selectedStyle={{
-//         color: '#CD7926'
+//         color: 'PRIMARY'
 //       }}>List</Label>
-//       <Icon selectedColor={'#CD7926'} src={require("../../assets/images/list-1.svg")} />
+//       <Icon selectedColor={'PRIMARY'} src={require("../../assets/images/list-1.svg")} />
 //     </NativeTabs.Trigger>
 //     <NativeTabs.Trigger name="generate">
 //       <Label selectedStyle={{
-//         color: '#CD7926'
+//         color: 'PRIMARY'
 //       }}>Generate</Label>
-//       <Icon selectedColor={'#CD7926'} src={require("../../assets/images/generate.svg")} />
+//       <Icon selectedColor={'PRIMARY'} src={require("../../assets/images/generate.svg")} />
 //     </NativeTabs.Trigger>
 //     <NativeTabs.Trigger name="pantry">
 //       <Label selectedStyle={{
-//         color: '#CD7926'
+//         color: 'PRIMARY'
 //       }}>Pantry</Label>
-//       <Icon selectedColor={'#CD7926'} src={require("../../assets/images/pantry.svg")} />
+//       <Icon selectedColor={'PRIMARY'} src={require("../../assets/images/pantry.svg")} />
 //     </NativeTabs.Trigger>
 //     <NativeTabs.Trigger name="settings">
 //       <Label selectedStyle={{
-//         color: '#CD7926'
+//         color: 'PRIMARY'
 //       }} >Settings</Label>
-//       <Icon selectedColor={'#CD7926'} src={require("../../assets/images/settings.svg")} />
+//       <Icon selectedColor={'PRIMARY'} src={require("../../assets/images/settings.svg")} />
 //     </NativeTabs.Trigger>
 //   </NativeTabs>;
 // };

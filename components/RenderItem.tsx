@@ -8,6 +8,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { OnboardingData } from "../constants/onboarding";
 import LottieView from "lottie-react-native";
+import { PRIMARY } from "@/constants/colors";
 
 type Props = {
   index: number;
@@ -135,7 +136,7 @@ const styles = StyleSheet.create({
   bigTitle: {
     fontSize: 55,
     fontWeight: "900",
-    color: "#CD7926",
+    color: PRIMARY,
     lineHeight: 50,
     textTransform: "capitalize",
     

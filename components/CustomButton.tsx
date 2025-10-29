@@ -2,13 +2,11 @@ import {
   FlatList,
   StyleSheet,
   TouchableWithoutFeedback,
-  useWindowDimensions,
 } from "react-native";
 import React from "react";
 import Animated, {
   AnimatedRef,
   SharedValue,
-  interpolateColor,
   useAnimatedStyle,
   withSpring,
   withTiming,
@@ -16,6 +14,7 @@ import Animated, {
 import { OnboardingData } from "../constants/onboarding";
 import { useRouter } from "expo-router";
 import { useAuthStore } from "@/utils/authStore";
+import { PRIMARY } from "@/constants/colors";
 
 type Props = {
   dataLength: number;
@@ -110,7 +109,7 @@ export default CustomButton;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#CD7926",
+    backgroundColor: PRIMARY,
     padding: 10,
     borderRadius: 100,
     justifyContent: "center",

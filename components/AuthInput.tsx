@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, TextInput, Pressable } from "react-native";
 import React from "react";
+import { PRIMARY } from "@/constants/colors";
 
 type AuthInputProps = {
   title: string;
@@ -29,7 +30,7 @@ const AuthInput = ({
         style={[
           styles.innerContainer,
 
-          isFocused && { borderColor: "#CD7926" },
+          isFocused && { borderColor: PRIMARY },
         ]}
       >
         {leftIcon}

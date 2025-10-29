@@ -13,6 +13,7 @@ import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { supabase } from "@/lib/supabase";
 import { useAuthStore } from "@/utils/authStore";
+import { PRIMARY } from "@/constants/colors";
 
 AppState.addEventListener("change", (state) => {
   if (state === "active") {
@@ -101,7 +102,7 @@ const SignIn = ({ authChangeHandler }: SignInProps) => {
           <Text
             style={{
               textAlign: "right",
-              color: "#CD7926",
+              color: PRIMARY,
               fontSize: 13
             }}
           >
@@ -121,13 +122,13 @@ const SignIn = ({ authChangeHandler }: SignInProps) => {
         <View style={styles.bottomTextContainer}>
           <Text>Don't have an account?</Text>
           <Pressable onPress={() => authChangeHandler("signUp")}>
-            <Text style={{ color: "#CD7926" }}>Sign Up here</Text>
+            <Text style={{ color: PRIMARY }}>Sign Up here</Text>
           </Pressable>
         </View>
       </View>
       <View style={styles.separatorContainer}>
         <View style={styles.separator} />
-        <Text style={{}}>or continue with</Text>
+        <Text>or continue with</Text>
         <View style={styles.separator} />
       </View>
       <View style={styles.altSignContainer}>
@@ -161,7 +162,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#CD7926",
+    backgroundColor: PRIMARY,
     padding: 15,
     borderRadius: 60,
     marginTop: 20,

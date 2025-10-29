@@ -3,6 +3,10 @@ import React, { useState } from "react";
 import { Image } from "expo-image";
 import AuthInput from "@/components/AuthInput";
 import AuthHeader from "@/components/AuthHeader";
+import { PRIMARY } from "@/constants/colors";
+
+
+
 const ForgotScreen = () => {
   const [email, setEmail] = useState("");
 
@@ -47,7 +51,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#CD7926",
+    backgroundColor: PRIMARY,
     padding: 15,
     borderRadius: 60,
     marginTop: 20,
