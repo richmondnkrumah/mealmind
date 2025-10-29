@@ -2,12 +2,14 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import { getItem, setItem, deleteItemAsync } from "expo-secure-store";
 import { create } from "zustand";
 import { Session, User } from "@supabase/supabase-js";
-import { supabase } from "../lib/supabase.ts";
+import { supabase } from "@/lib/supabase";
 
 interface Profile {
   id: string;
+  username: string;
   preferences: object | null;
   inventory: string[] | null;
+  avatar_url: string | null
 }
 
 interface UserState {
@@ -51,7 +53,7 @@ export const useAuthStore = create<UserState>()(
         try {
           const { data, error, status } = await supabase
             .from("profiles")
-            .select(`id, preferences, inventory`)
+            .select(`id, preferences, inventory,username,avatar_url`)
             .eq("id", user.id)
             .single();
           console.log(data, "fetched profile data");
