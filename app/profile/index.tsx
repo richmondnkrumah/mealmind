@@ -4,6 +4,7 @@ import { useAuthStore } from "@/utils/authStore";
 import { Image } from "expo-image";
 import { PRIMARY } from "@/constants/colors";
 import Feather from "@expo/vector-icons/Feather";
+import { ScrollView } from "react-native-reanimated/lib/typescript/Animated";
 
 const ProfileScreen = () => {
   const { profile } = useAuthStore();
@@ -53,6 +54,9 @@ const ProfileScreen = () => {
         </View>
         <Text>{profile?.email}</Text>
       </View>
+      <ScrollView>
+        
+      </ScrollView>
     </View>
   );
 };
