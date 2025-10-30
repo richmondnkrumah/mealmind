@@ -51,7 +51,7 @@ const ProfileScreen = () => {
             <Feather name="edit-3" size={18} color="white" />
           </Pressable>
         </View>
-        <Text>{profile?.email}richastapop@gmail.com</Text>
+        <Text>{profile?.email}</Text>
       </View>
     </View>
   );
