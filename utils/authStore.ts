@@ -54,7 +54,7 @@ export const useAuthStore = create<UserState>()(
         try {
           const { data, error, status } = await supabase
             .from("profiles")
-            .select(`id, preferences,inventory,username,avatar_url,email`)
+            .select(`id, preferences,inventory,username,avatar_url`)
             .eq("id", user.id)
             .single();
           console.log(data, "fetched profile data");
@@ -63,7 +63,7 @@ export const useAuthStore = create<UserState>()(
           }
 
           if (data) {
-            set({ profile: data } );
+            set({ profile: {...data, email: user.email!} } );
           }
         } catch (error) {
           console.error("Error fetching profile:", error);
