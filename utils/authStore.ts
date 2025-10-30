@@ -9,7 +9,8 @@ interface Profile {
   username: string;
   preferences: object | null;
   inventory: string[] | null;
-  avatar_url: string | null
+  avatar_url: string | null,
+  email: string
 }
 
 interface UserState {
@@ -53,7 +54,7 @@ export const useAuthStore = create<UserState>()(
         try {
           const { data, error, status } = await supabase
             .from("profiles")
-            .select(`id, preferences, inventory,username,avatar_url`)
+            .select(`id, preferences,inventory,username,avatar_url,email`)
             .eq("id", user.id)
             .single();
           console.log(data, "fetched profile data");

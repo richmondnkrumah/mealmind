@@ -42,3 +42,8 @@ export type DUMMYMEALPLANDATA = {
   plan_data: PlanData;
   cooked_status: CookedStatus;
 };
+
+export type PANTRYCARD = {
+  deleteItemHandler: (itemtoDelete: string ) => void,
+  ingredient: string
+}

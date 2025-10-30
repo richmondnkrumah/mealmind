@@ -6,7 +6,6 @@ import {
   View,
   FlatList,
   ActivityIndicator,
-  TouchableOpacity,
   Alert,
 } from "react-native";
 import React from "react";
@@ -15,6 +14,7 @@ import { useAuthStore } from "@/utils/authStore"; // Adjusted path
 import { supabase } from "@/lib/supabase";       // Adjusted path
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
+import PantryCard from "@/components/PantryCard";
 
 const PantryScreen = () => {
   const { profile, user, isInventoryLoading, fetchProfile } = useAuthStore();
@@ -30,7 +30,6 @@ const PantryScreen = () => {
     if (!user || !profile || !profile.inventory) return;
 
     const originalInventory = profile.inventory;
-    // Ensure we are working with an array before filtering
     const currentInventory = Array.isArray(originalInventory) ? originalInventory : [];
     const newInventory = currentInventory.filter(item => item !== itemToDelete);
 
@@ -80,12 +79,7 @@ const PantryScreen = () => {
         data={inventoryData} // Use the validated array
         keyExtractor={(item, index) => `${item}-${index}`}
         renderItem={({ item }) => (
-          <View style={styles.inventoryItem}>
-            <Text style={styles.itemText}>{item}</Text>
-            <TouchableOpacity onPress={() => handleDeleteItem(item)}>
-              <Ionicons name="trash-bin-outline" size={24} color="#C86235" />
-            </TouchableOpacity>
-          </View>
+          <PantryCard ingredient={item} deleteItemHandler={handleDeleteItem} />
         )}
         onRefresh={fetchProfile}
         refreshing={isInventoryLoading}
@@ -114,26 +108,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 10,
   },
-  inventoryItem: {
-    backgroundColor: "#FFFFFF",
-    padding: 15,
-    marginHorizontal: 20,
-    marginBottom: 10,
-    borderRadius: 10,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  itemText: {
-    fontSize: 16,
-    color: "#5C493D",
-    textTransform: "capitalize",
-  },
+  
   emptyText: {
     fontSize: 20,
     fontWeight: "600",
