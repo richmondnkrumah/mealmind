@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
+import * as React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import type { PANTRYCARD } from "@/constants/types";
 
