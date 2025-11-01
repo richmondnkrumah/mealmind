@@ -1,18 +1,38 @@
-import { Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+// components/PantryCard.tsx
+
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import * as React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import type { PANTRYCARD } from "@/constants/types";
+import { ACCENT } from "@/constants/colors";
+import { Image } from "expo-image";
+import { getAssetForIngredient } from "@/constants/ingredientAssets"; 
 
+const PantryCard = ({ ingredient, deleteItemHandler }: PANTRYCARD) => {
+  const assetSource = getAssetForIngredient(ingredient);
 
-
-
-const PantryCard = ({ingredient,deleteItemHandler} : PANTRYCARD) => {
   return (
     <View style={styles.inventoryItem}>
-      <Text style={styles.itemText}>{ingredient}</Text>
-      <Pressable onPress={() => deleteItemHandler(ingredient)}>
-        <Ionicons name="trash-bin-outline" size={24} color="#C86235" />
+      <Image
+        source={assetSource}
+        style={styles.ingredientImage}
+        contentFit="cover"
+      />
+      <Pressable
+        style={styles.deleteButton}
+        onPress={() => deleteItemHandler(ingredient)}
+      >
+        <Ionicons name="trash-outline" size={20} color="white" />
       </Pressable>
+
+      <View style={styles.textContainer}>
+        <Text style={styles.itemText}>{ingredient}</Text>
+      </View>
     </View>
   );
 };
@@ -20,24 +40,43 @@ const PantryCard = ({ingredient,deleteItemHandler} : PANTRYCARD) => {
 export default PantryCard;
 
 const styles = StyleSheet.create({
-    inventoryItem: {
-    backgroundColor: "#FFFFFF",
-    padding: 15,
-    marginHorizontal: 20,
-    marginBottom: 10,
-    borderRadius: 10,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
+  inventoryItem: {
+    backgroundColor: ACCENT,
+    width: "48%",
+    height: 150,
+    borderRadius: 16,
+    marginBottom: 20,
+    position: 'relative',
+    overflow: 'hidden',
+  },
+  ingredientImage: {
+    width: '100%',
+    height: '100%',
+  },
+  deleteButton: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  textContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent black background
+    paddingVertical: 8,
+    paddingHorizontal: 12,
   },
   itemText: {
-    fontSize: 16,
-    color: "#5C493D",
+    fontSize: 14,
+    fontWeight: '600',
+    color: "#FFFFFF", // White text for better contrast on the overlay
     textTransform: "capitalize",
   },
 });
