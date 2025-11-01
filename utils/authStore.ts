@@ -16,8 +16,6 @@ interface Profile {
 interface UserState {
   isLoggedIn: boolean;
   hasCompletedOnboarding: boolean;
-  logIn: () => void;
-  logOut: () => void;
   resetOnboarding: () => void;
   completeOnboarding: () => void;
   session: Session | null;
@@ -35,8 +33,6 @@ export const useAuthStore = create<UserState>()(
       profile: null,
       isInventoryLoading: false,
       user: null,
-      logIn: () => set(() => ({ isLoggedIn: true })),
-      logOut: () => set(() => ({ isLoggedIn: false })),
       hasCompletedOnboarding: false,
       resetOnboarding: () => set(() => ({ hasCompletedOnboarding: false })),
       completeOnboarding: () => set(() => ({ hasCompletedOnboarding: true })),
