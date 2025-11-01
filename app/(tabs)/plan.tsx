@@ -60,7 +60,7 @@ const plan = () => {
           </View>
           <Link href={"/profile"} style={styles.avatarContainer}>
             {profile?.avatar_url ? (
-              <Image source={profile.avatar_url} />
+              <Image style={{height: '100%', width:'100%', borderRadius: 25}} source={profile.avatar_url} contentFit="cover" />
             ) : (
               <Text
                 style={{
