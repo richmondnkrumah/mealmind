@@ -17,10 +17,11 @@ import {
   View,
 } from "react-native";
 
+
 // --- Icon components remain the same ---
 const PlanIcon = () => <Ionicons name="home-outline" size={24} color="gray" />;
 const ListIcon = () => <Ionicons name="list-outline" size={24} color="gray" />;
-const GenerateIcon = () => <Ionicons name="add-circle" size={32} color={PRIMARY} />;
+const GenerateIcon = () => <Ionicons name="add" size={32} color={PRIMARY} />;
 const PantryIcon = () => <Ionicons name="cube-outline" size={24} color="gray" />;
 const SettingsIcon = () => <Ionicons name="settings-outline" size={24} color="gray" />;
 
@@ -142,7 +143,7 @@ const TabsLayout = () => {
         <Tabs.Screen name="list" options={{ title: "List", tabBarIcon: ListIcon }} />
         <Tabs.Screen
           name="generate"
-          options={{ title: "Generate", tabBarIcon: GenerateIcon }}
+          options={{ title: "", tabBarIcon: GenerateIcon }}
           listeners={{
             tabPress: (e) => {
               e.preventDefault();
