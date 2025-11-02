@@ -58,9 +58,14 @@ const plan = () => {
               What would you like to cook today?
             </Text>
           </View>
+
           <Link href={"/profile"} style={styles.avatarContainer}>
             {profile?.avatar_url ? (
-              <Image style={{height: '100%', width:'100%', borderRadius: 25}} source={profile.avatar_url} contentFit="cover" />
+              <Image
+                style={{ height: "100%", width: "100%", borderRadius: 25 }}
+                source={profile.avatar_url}
+                contentFit="cover"
+              />
             ) : (
               <Text
                 style={{
@@ -73,6 +78,16 @@ const plan = () => {
             )}
           </Link>
         </View>
+        <Pressable style={{
+          backgroundColor:'#E9F7B2',
+          padding: 15,
+          width: 200,
+          alignItems:'center',
+          borderRadius: 100,
+          marginBottom: 20
+        }}>
+          <Text>Generate Meals</Text>
+        </Pressable>
         <View>
           <ScrollView
             horizontal
@@ -105,8 +120,8 @@ const plan = () => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             gap: 30,
-            paddingRight:25,
-            paddingBottom: 25
+            paddingRight: 25,
+            paddingBottom: 25,
           }}
         >
           {selectedRecipes &&
@@ -130,14 +145,14 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     paddingLeft: 25,
     flex: 1,
-    paddingTop: (StatusBar.currentHeight ?? 0) + 15, 
+    paddingTop: (StatusBar.currentHeight ?? 0) + 15,
   },
   headerContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 20,
-    paddingRight: 25
+    paddingRight: 25,
   },
   headerTextContainer: {
     width: "70%",
