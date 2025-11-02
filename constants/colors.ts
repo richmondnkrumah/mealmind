@@ -1,2 +1,5 @@
 export const  PRIMARY = "#CD7926"
 export const ACCENT = "#FCF5EE"
+export const FADED_WHITE = "#E0E0E0"
+export const FADED_ICON = ""
+export const HEADER = ""

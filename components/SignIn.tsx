@@ -31,8 +31,8 @@ const SignIn = ({ authChangeHandler }: SignInProps) => {
   const [hidePassword, setHidePassword] = useState(true);
   const router = useRouter();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("Johndoe@gmail.com");
+  const [password, setPassword] = useState("123456789");
   const { saveUserSession, fetchProfile } = useAuthStore();
   const [loading, setLoading] = useState(false);
   async function signInWithEmail() {
