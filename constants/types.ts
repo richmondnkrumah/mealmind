@@ -47,3 +47,9 @@ export type PANTRYCARD = {
   deleteItemHandler: (itemtoDelete: string ) => void,
   ingredient: string
 }
+
+export type PROFILELINKS = {
+  href: any,
+  iconName: any,
+  text: string
+}
