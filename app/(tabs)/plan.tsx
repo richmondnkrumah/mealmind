@@ -71,7 +71,7 @@ const plan = () => {
   const handleGeneratePlan = async () => {
     setIsGenerating(true);
     try {
-      const { error } = await supabase.functions.invoke('generate-meal-plan-gemini');
+      const { error } = await supabase.functions.invoke('generate-full-meal-plan');
       
       if (error) {
         throw error;
@@ -128,7 +128,7 @@ const plan = () => {
       </View>
     );
   }
-  console.log(mealPlan.plan_data.weekly_plan)
+  console.log(mealPlan.plan_data,"jk")
 console.log(isLoading)
   return (
     <View style={styles.container}>

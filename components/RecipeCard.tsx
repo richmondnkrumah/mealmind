@@ -12,6 +12,7 @@ const RecipeCard = ({
   recipe: RECIPE | null;
   mealType: keyof DAYMEALS;
 }) => {
+  console.log(recipe)
   return (
     <View style={styles.recipeContainer}>
       <Text style={styles.recipeCategory}>{mealType}</Text>
@@ -25,7 +26,7 @@ const RecipeCard = ({
       ) : (
         <View style={styles.recipeCard}>
           <Image
-            source={require("../assets/test.jpg")}
+            source={recipe.imageUrl}
             style={{
               height: 160,
               width: "100%",
