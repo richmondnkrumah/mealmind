@@ -11,4 +11,5 @@ const EditProfileScreen = () => {
 
 export default EditProfileScreen
 
+
 const styles = StyleSheet.create({})
