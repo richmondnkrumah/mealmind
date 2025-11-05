@@ -31,7 +31,6 @@ Deno.serve(async (req) => {
     // --- STAGE 1: TEXT GENERATION ---
     console.log("Stage 1: Generating text plan...");
     const genAI = new GoogleGenAI(Deno.env.get("GEMINI_API_KEY")!);
-
     const textPrompt = getTextGenerationPrompt(profile);
 
     const textResult = await genAI.models.generateContent({
@@ -39,6 +38,7 @@ Deno.serve(async (req) => {
       contents: textPrompt,
     });
     const aiResponseText = textResult.text;
+    console.log("this is from AI",aiResponseText)
     const planData = parseAIResponse(aiResponseText);
     console.log("Stage 1: Text plan generated and parsed successfully.");
 
@@ -80,7 +80,6 @@ Deno.serve(async (req) => {
         planData.weekly_plan[day][meal].imageUrl = imageUrl;
       } else {
         console.error(`Image generation failed for a meal:`, result.reason);
-        // The imageUrl will remain null/undefined, and will be handled by the frontend
       }
     });
 
@@ -91,7 +90,7 @@ Deno.serve(async (req) => {
       .insert({
         user_id: user.id,
         plan_data: planData,
-        plan_type: "daily",
+        plan_type: "weekly",
       })
       .select()
       .single();
@@ -117,7 +116,7 @@ async function generateAndUploadImage(
   userId: string,
   day: string,
   meal: string,
-  imagePrompt: string, // <-- Changed parameter name to be clear
+  imagePrompt: string, 
   supabase: any
 ): Promise<{ day: string; meal: string; imageUrl: string }> {
   try {
@@ -156,30 +155,28 @@ async function generateAndUploadImage(
 function getTextGenerationPrompt(profile: any) {
   // --- FIX: Ask for 'imagePrompt', not 'imageUrl' ---
   const prompt = `
-      You are a world-class meal planning assistant. Your task is to create a 1-day meal plan.
-      You MUST respond ONLY with a string formatted according to the exact rules.
-      
+      You are a world-class meal planning assistant. Your task is to create a full 7-day meal plan (breakfast, lunch, dinner for Monday to Sunday).
+      You MUST respond ONLY with a string formatted according to these exact rules. Do not include any other text or explanations.
+
+      ### FORMATTING RULES ###
+      - Each day is enclosed in ###DAY_NAME### (e.g., ###MONDAY###, ###TUESDAY###, etc.).
+      - Each meal slot (breakfast, lunch, dinner) is enclosed in @@MEAL_SLOT@@.
+      - Each piece of information is a key-value pair separated by '::'.
+      - Items in a list (ingredients, instructions) are separated by '~~'.
+
       ### KEY-VALUE PAIRS TO GENERATE ###
       - recipeName:: [Name of the recipe]
       - cookTime:: [e.g., 30 min]
       - calories:: [e.g., 450 kcal]
-      - imagePrompt:: [A short, vivid phrase for an image AI, e.g., "A beautiful top-down shot of a vibrant quinoa salad in a white ceramic bowl, garnished with fresh cilantro."]
+      - imagePrompt:: [A short, vivid phrase for an image AI]
       - ingredients:: [List separated by ~~]
       - instructions:: [List separated by ~~]
-
-      IMPORTANT: DO NOT generate an imageUrl. Generate an 'imagePrompt' instead.
-
-      ### FORMATTING RULES ###
-      - Each day is enclosed in ###TODAY###.
-      - Each meal slot is enclosed in @@MEAL_SLOT@@.
-      - Each key-value pair is separated by '::'.
-      - List items are separated by '~~'.
 
       ### USER DATA ###
       User Preferences: ${JSON.stringify(profile.preferences)}
       Ingredients User Already Has: ${JSON.stringify(profile.inventory)}
 
-      Now, generate the 1-day meal plan.
+      Now, generate the full 7-day meal plan based on the user data.
     `;
   return prompt;
 }
@@ -187,54 +184,52 @@ function getTextGenerationPrompt(profile: any) {
 // Your parser function needs to be updated to look for `imagePrompt`
 function parseAIResponse(text: string) {
   const plan: any = { weekly_plan: {}, shopping_list: [] };
-  const cleaned = text.replaceAll("\n", " "); // More robust cleaning
-  const daySections = cleaned.split(/###\w+###/).filter(Boolean);
-  const todayData = daySections[0];
-  if (!todayData)
-    throw new Error("AI response did not contain a valid day section.");
+  // A more robust regex to find day blocks, handling potential whitespace
+  const dayRegex = /###\s*(\w+)\s*###([\s\S]*?)(?=###|$)/g;
+  let dayMatch;
 
-  const mealSlots = todayData.split(/@@\w+@@/).filter(Boolean);
+  while ((dayMatch = dayRegex.exec(text)) !== null) {
+    const dayName = dayMatch[1].toLowerCase();
+    const dayContent = dayMatch[2];
+    
+    const dayPlan: any = {};
+    // A more robust regex to find meal blocks
+    const mealRegex = /@@\s*(\w+)\s*@@([\s\S]*?)(?=@@|###|$)/g;
+    let mealMatch;
 
-  const dayPlan: any = {};
-  const mealNames = ["breakfast", "lunch", "dinner"];
+    while ((mealMatch = mealRegex.exec(dayContent)) !== null) {
+      const mealName = mealMatch[1].toLowerCase();
+      const mealContent = mealMatch[2].trim();
+      const recipe: any = {};
+      const parts = mealContent.split('::');
 
-  mealSlots.forEach((slotText, index) => {
-    const mealName = mealNames[index];
-    if (!mealName) return;
+      // 2. Iterate through the parts to reconstruct key-value pairs.
+      for (let i = 0; i < parts.length - 1; i++) {
+        const valueAndNextKey = parts[i + 1];
+        
+        // Find the last word of the current part, which is the key.
+        const keyMatch = parts[i].match(/(\w+)$/);
+        if (!keyMatch) continue;
+        const key = keyMatch[0];
 
-    const recipe: any = {};
-    const lines = slotText.trim().split("::");
+        // The value is everything in the next part until the start of the next key.
+        const nextKeyMatch = valueAndNextKey.match(/\s(\w+)$/);
+        const value = nextKeyMatch ? valueAndNextKey.substring(0, nextKeyMatch.index).trim() : valueAndNextKey.trim();
 
-    // A more robust parser that handles the key-value structure
-    for (let i = 0; i < lines.length - 1; i++) {
-      const keyPart = lines[i].trim();
-      const valuePart = lines[i + 1].trim();
-
-      // Find the actual key at the end of the string
-      const keyMatch = keyPart.match(/(\w+)$/);
-      if (!keyMatch) continue;
-      const key = keyMatch[0];
-
-      // The value is everything up to the next key
-      const nextKeyIndex = valuePart.search(/\s\w+$/);
-      const value =
-        nextKeyIndex === -1
-          ? valuePart
-          : valuePart.substring(0, nextKeyIndex).trim();
-
-      if (key === "ingredients" || key === "instructions") {
-        recipe[key] = value.split("~~").map((item) => item.trim());
-      } else {
-        recipe[key] = value;
+        // 3. Assign the cleaned key and value to the recipe object.
+        if (key && value) {
+          if (key === "ingredients" || key === "instructions") {
+            recipe[key] = value.split("~~").map(item => item.trim()).filter(Boolean);
+          } else {
+            recipe[key] = value;
+          }
+        }
       }
+      dayPlan[mealName] = recipe;
     }
-    dayPlan[mealName] = recipe;
-  });
+    plan.weekly_plan[dayName] = dayPlan;
+  }
 
-  const today = new Date()
-    .toLocaleString("en-us", { weekday: "long" })
-    .toLowerCase();
-  plan.weekly_plan[today] = dayPlan;
-
+  // Shopping list logic can be added here later
   return plan;
 }
