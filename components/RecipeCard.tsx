@@ -28,7 +28,7 @@ const RecipeCard = ({
           <Image
             source={recipe.imageUrl}
             style={{
-              height: 160,
+              height: 180,
               width: "100%",
             }}
             contentFit="cover"
