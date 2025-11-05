@@ -69,14 +69,14 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent black background
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
     paddingVertical: 8,
     paddingHorizontal: 12,
   },
   itemText: {
     fontSize: 14,
     fontWeight: '600',
-    color: "#FFFFFF", // White text for better contrast on the overlay
+    color: "#FFFFFF", 
     textTransform: "capitalize",
   },
 });
