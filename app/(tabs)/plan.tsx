@@ -1,38 +1,34 @@
 import {
-  FlatList,
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
   StatusBar,
   Alert,
   ActivityIndicator,
 } from "react-native";
 import React, { useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useAuthStore } from "@/utils/authStore";
-import { Image } from "expo-image";
 import { ACCENT, PRIMARY } from "@/constants/colors";
 import { Link, useFocusEffect } from "expo-router";
 import RecipeCard from "@/components/RecipeCard";
-import type { RECIPE, WEEKDAYS, DAYMEALS } from "@/constants/types";
+import type { WEEKDAYS, DAYMEALS } from "@/constants/types";
 import { supabase } from "@/lib/supabase";
+import { Image } from "expo-image";
 
 const plan = () => {
   const { profile, user } = useAuthStore();
+  
+  const allDaysOfWeek: WEEKDAYS[] = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+  const todayString = new Date().toLocaleString("en-us", { weekday: "long" }).toLowerCase() as WEEKDAYS;
 
-  // --- State to hold the plan from the database ---
   const [mealPlan, setMealPlan] = useState<any | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
-  
-  // --- State for UI interaction ---
-  const [selectedDay, setSelectedDay] = useState<WEEKDAYS>("monday");
+  const [selectedDay, setSelectedDay] = useState<WEEKDAYS>(todayString);
   const [selectedRecipes, setSelectedRecipes] = useState<DAYMEALS | null>(null);
 
-  // --- This is the new fetchLatestPlan function ---
   const fetchLatestPlan = async () => {
     if (!user) return;
     
@@ -40,25 +36,23 @@ const plan = () => {
     try {
       const { data, error } = await supabase
         .from('meal_plans')
-        .select('plan_data') // We only need the plan JSON
+        .select('plan_data')
         .eq('user_id', user.id)
-        .order('created_at', { ascending: false }) // Get the newest one first
+        .order('created_at', { ascending: false })
         .limit(1)
-        .single();
+        .single()
 
-      if (error && error.code !== 'PGRST116') { // PGRST116 means "no rows returned"
+      if (error && error.code !== 'PGRST116') {
         throw error;
       }
       
-      // Update our state with the fetched plan
       if (data) {
         setMealPlan(data);
-        // Automatically set the recipes for the currently selected day
         getRecipe(selectedDay, data);
       } else {
-        setMealPlan(null); // Explicitly set to null if no plan is found
+        setMealPlan(null);
+        setSelectedRecipes(null); // Ensure recipes are cleared if no plan exists
       }
-
     } catch (error: any) {
       Alert.alert("Error", "Could not fetch your meal plan.");
       console.error(error);
@@ -67,20 +61,13 @@ const plan = () => {
     }
   };
 
-  // --- This is the wired-up generate function ---
   const handleGeneratePlan = async () => {
     setIsGenerating(true);
     try {
       const { error } = await supabase.functions.invoke('generate-full-meal-plan');
-      
-      if (error) {
-        throw error;
-      }
-
-      // Success! Refetch the data to display the new plan.
+      if (error) throw error;
       await fetchLatestPlan();
       Alert.alert("Success!", "Your new meal plan is ready.");
-
     } catch (error: any) {
       Alert.alert("Generation Failed", error.message);
       console.error(error);
@@ -89,7 +76,6 @@ const plan = () => {
     }
   };
   
-  // --- Updated getRecipe function to use the state variable ---
   const getRecipe = (day: WEEKDAYS, currentPlan: any) => {
     if (!currentPlan) {
       setSelectedRecipes(null);
@@ -106,19 +92,10 @@ const plan = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-      // Set the default selected day to today
-      const today = new Date().toLocaleString("en-us", { weekday: "long" }).toLowerCase() as WEEKDAYS;
-      setSelectedDay(today);
-      // Fetch the plan, which will then trigger getRecipe
-      console.log("i rerrun")
+      setSelectedDay(todayString);
       fetchLatestPlan();
-    }, [user]) // Re-run if the user changes
+    }, [user])
   );
-
-  // Derive the days from the mealPlan state, or an empty array
-  const days = mealPlan ? Object.keys(mealPlan.plan_data.weekly_plan) as WEEKDAYS[] : [];
-
-  // --- Render Logic ---
 
   if (isLoading) {
     return (
@@ -128,8 +105,7 @@ const plan = () => {
       </View>
     );
   }
-  console.log(mealPlan.plan_data,"jk")
-console.log(isLoading)
+
   return (
     <View style={styles.container}>
         <View style={styles.headerContainer}>
@@ -147,12 +123,12 @@ console.log(isLoading)
               {profile?.avatar_url ? (
                 <Image
                   style={{ height: "100%", width: "100%", borderRadius: 25 }}
-                  source={profile.avatar_url}
+                  source={{ uri: profile.avatar_url }} // Use object for uri
                   contentFit="cover"
                 />
               ) : (
                 <Text style={{ fontSize: 30, color: "white" }}>
-                  {profile?.username.charAt(0)}
+                  {profile?.username?.charAt(0)}
                 </Text>
               )}
             </Pressable>
@@ -167,64 +143,72 @@ console.log(isLoading)
           {isGenerating ? (
             <ActivityIndicator color="#5C493D" />
           ) : (
-            <Text style={styles.generateButtonText}>Generate Today's Meals</Text>
+            <Text style={styles.generateButtonText}>Generate Weekly Plan</Text>
           )}
         </Pressable>
         
-        {/* Only show the plan UI if a plan exists */}
-        {!mealPlan && !isLoading ? (
+        <View>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.selectorContainer}
+          >
+            {allDaysOfWeek.map((day) => {
+              // Determine what text to display for the day
+              const displayText = day === todayString ? "Today" : day.slice(0, 3);
+              
+              return (
+                <Pressable
+                  key={day}
+                  style={[
+                    styles.selectorChip,
+                    selectedDay === day && styles.selectedChip,
+                  ]}
+                  onPress={() => handleDayAndRecipe(day)}
+                >
+                  <Text
+                    style={[
+                      styles.selectorText,
+                      selectedDay === day && styles.selectedText,
+                    ]}
+                  >
+                    {displayText}
+                  </Text>
+                </Pressable>
+              );
+            })}
+          </ScrollView>
+        </View>
+
+        {!mealPlan ? (
             <View style={styles.centeredEmpty}>
                 <Text style={styles.emptyText}>No plan found.</Text>
                 <Text style={styles.emptySubtext}>Press the button above to create one!</Text>
             </View>
         ) : (
-            <>
-              <View>
-                <ScrollView
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={styles.selectorContainer}
-                >
-                  {days.map((day) => (
-                    <Pressable
-                      key={day}
-                      style={[
-                        styles.selectorChip,
-                        selectedDay === day && styles.selectedChip,
-                      ]}
-                      onPress={() => handleDayAndRecipe(day)}
-                    >
-                      <Text
-                        style={[
-                          styles.selectorText,
-                          selectedDay === day && styles.selectedText,
-                        ]}
-                      >
-                        {day.slice(0, 3)}
-                      </Text>
-                    </Pressable>
-                  ))}
-                </ScrollView>
-              </View>
-
-              <ScrollView
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{
-                  gap: 30,
-                  paddingRight: 25,
-                  paddingBottom: 25,
-                }}
-              >
-                {selectedRecipes &&
-                  Object.entries(selectedRecipes).map(([mealType, recipe], idx) => (
-                    <RecipeCard
-                      key={idx}
-                      recipe={recipe}
-                      mealType={mealType as keyof DAYMEALS}
-                    />
-                  ))}
-              </ScrollView>
-            </>
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{
+                gap: 30,
+                paddingRight: 25,
+                paddingBottom: 25,
+              }}
+            >
+              {selectedRecipes ? (
+                Object.entries(selectedRecipes).map(([mealType, recipe], idx) => (
+                  <RecipeCard
+                    key={`${selectedDay}-${mealType}-${idx}`} // More stable key
+                    recipe={recipe}
+                    mealType={mealType as keyof DAYMEALS}
+                  />
+                ))
+              ) : (
+                // Display this message if a day is selected but has no meals
+                <View style={styles.centeredEmpty}>
+                    <Text style={styles.emptyText}>No meals planned for {selectedDay}.</Text>
+                </View>
+              )}
+            </ScrollView>
         )}
     </View>
   );
@@ -232,7 +216,7 @@ console.log(isLoading)
 
 export default plan;
 
-// --- Your existing styles with minor additions ---
+// Your existing styles (no changes needed)
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
@@ -264,8 +248,8 @@ const styles = StyleSheet.create({
     width: 50,
     borderRadius: 25,
     backgroundColor: PRIMARY,
-    justifyContent: 'center', // Added for initial centering
-    alignItems: 'center',   // Added for initial centering
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   selectorContainer: {
     paddingBottom: 20,
@@ -289,22 +273,22 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
   generateButton: {
-    backgroundColor:'#E9F7B2',
+    backgroundColor:PRIMARY,
     padding: 15,
     borderRadius: 100,
     marginBottom: 20,
-    marginRight: 25, // To align with the right padding of other elements
+    marginRight: 25,
     alignItems:'center',
   },
   generateButtonText: {
     fontWeight: 'bold',
-    color: '#5C493D',
+    color: '#FFF',
   },
   centeredEmpty: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingRight: 25, // To center it correctly within the padded view
+    paddingRight: 25,
   },
   emptyText: {
     fontSize: 18,
