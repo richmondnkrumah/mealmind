@@ -135,15 +135,16 @@ const TabsLayout = () => {
     <>
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: "PRIMARY",
+          tabBarActiveTintColor: PRIMARY,
           headerShown: false,
+          
         }}
       >
         <Tabs.Screen name="plan" options={{ title: "Plan", tabBarIcon: PlanIcon }} />
         <Tabs.Screen name="list" options={{ title: "List", tabBarIcon: ListIcon }} />
         <Tabs.Screen
           name="generate"
-          options={{ title: "", tabBarIcon: GenerateIcon }}
+          options={{ title: "Add", tabBarIcon: GenerateIcon }}
           listeners={{
             tabPress: (e) => {
               e.preventDefault();
