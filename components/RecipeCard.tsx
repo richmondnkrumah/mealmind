@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
+import { View, TouchableOpacity, Text, StyleSheet, Pressable } from "react-native";
 import { Image } from "expo-image";
 import type { DAYMEALS, RECIPE } from "@/constants/types";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
@@ -16,10 +16,10 @@ const RecipeCard = ({
   console.log(recipe);
   return (
     <Link href={{
-      pathname: '/plan/recipe/[data]',
+      pathname: '/recipe/[data]',
       params: { data:JSON.stringify(recipe) }
     }} asChild>
-      <View style={styles.recipeContainer}>
+      <Pressable style={styles.recipeContainer}>
         <Text style={styles.recipeCategory}>{mealType}</Text>
         {!recipe ? (
           <View style={[styles.recipeCard, styles.emptyCard]}>
@@ -64,7 +64,7 @@ const RecipeCard = ({
             </View>
           </View>
         )}
-      </View>
+      </Pressable>
     </Link>
   );
 };
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     overflow: "hidden",
     borderWidth: 1,
-    borderColor: "#red",
+    borderColor: "#E0E0E0",
   },
   emptyCard: {
     justifyContent: "center",
