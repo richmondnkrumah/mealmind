@@ -4,14 +4,14 @@ import { INGREDIENTCARD } from "@/constants/types";
 import { Image } from "expo-image";
 import { getAssetForIngredient } from "@/constants/ingredientAssets";
 
-const IngredientCard = ({ ingredient, quantity }: INGREDIENTCARD) => {
-    const assetSource = getAssetForIngredient(ingredient);
-    
+const IngredientCard = ({ label, quantity }: INGREDIENTCARD) => {
+    const assetSource = getAssetForIngredient(label);
+    console.log('Asset source for', label);
   return (
     <View style={styles.container}>
       <Image style={styles.ingredientImage} source={assetSource} contentFit="cover" />
-      <View>
-        <Text>{ingredient}</Text>
+      <View >
+        <Text>{label}</Text>
         <Text>{quantity}</Text>
       </View>
     </View>
@@ -22,8 +22,8 @@ export default IngredientCard;
 
 const styles = StyleSheet.create({
     container: {
-    width: '48%',
-    height: 150,
+    width: 80,
+    height: 80,
     borderRadius: 16,
     position: 'relative',
     overflow: 'hidden',

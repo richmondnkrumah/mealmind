@@ -49,7 +49,7 @@ export type PANTRYCARD = {
 }
 
 export type INGREDIENTCARD = {
-  ingredient: string,
+  label: string,
   quantity: string
 }
 export type PROFILELINKS = {

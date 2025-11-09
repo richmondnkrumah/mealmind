@@ -29,9 +29,9 @@ const SingleRecipeScreen = () => {
         </View>
         <View>
           <Text>Ingredients</Text>
-          <ScrollView horizontal>
+          <ScrollView horizontal contentContainerStyle={{ gap: 15 }}>
             {dummyIngredientsData.map((ingredient, index) => (
-              <IngredientCard quantity={ingredient.quantity} ingredient={ingredient.label} key={index} />
+              <IngredientCard quantity={ingredient.quantity} label={ingredient.label} key={index} />
             ))}
           </ScrollView>
         </View>
