@@ -8,15 +8,42 @@ export const dummyNutritionsData = [
 ]
 
 export const dummyIngredientsData = [
-  "Cabbage",
-  "Lettuce",
-  "Broccoli",
-  "salad",
-  "carrot",
-  "cucumber",
-  "corn",
-  "beet",
-  "celery"
+  {
+    label: "Tomato",
+    quantity: "2 pcs"
+  },
+  {
+    label: "Lettuce",
+    quantity: "1 head"
+  },
+  {
+    label: "Broccoli",
+    quantity: "1 head"
+  },
+  {
+    label: "Salad",
+    quantity: "1 bunch"
+  },
+  {
+    label: "Carrot",
+    quantity: "3 pcs"
+  },
+  {
+    label: "Cucumber",
+    quantity: "2 pcs"
+  },
+  {
+    label: "Corn",
+    quantity: "2 ears"
+  },
+  {
+    label: "Beet",
+    quantity: "4 pcs"
+  },
+  {
+    label: "Celery",
+    quantity: "1 bunch"
+  }
 ];
 export const dummyMealPlanData: DUMMYMEALPLANDATA = {
   plan_data: {
