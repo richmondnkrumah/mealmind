@@ -1,6 +1,11 @@
 import { DUMMYMEALPLANDATA } from "./types";
 
-
+export const dummyNutritionsData = [
+  { label: "Calories", value: "500g" },
+  { label: "Protein", value: "30g" },
+  { label: "Carbo", value: "50g" },
+  { label: "Fats", value: "20g" },
+]
 export const dummyMealPlanData: DUMMYMEALPLANDATA = {
   plan_data: {
     shopping_list: [
