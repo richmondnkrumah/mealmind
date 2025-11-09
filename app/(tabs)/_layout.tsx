@@ -137,7 +137,6 @@ const TabsLayout = () => {
         screenOptions={{
           tabBarActiveTintColor: PRIMARY,
           headerShown: false,
-          
         }}
       >
         <Tabs.Screen name="plan" options={{ title: "Plan", tabBarIcon: PlanIcon }} />

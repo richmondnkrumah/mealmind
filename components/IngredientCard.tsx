@@ -5,12 +5,18 @@ import { Image } from "expo-image";
 import { getAssetForIngredient } from "@/constants/ingredientAssets";
 
 const IngredientCard = ({ label, quantity }: INGREDIENTCARD) => {
-    const assetSource = getAssetForIngredient(label);
-    console.log('Asset source for', label);
+  const assetSource = getAssetForIngredient(label);
+  console.log("Asset source for", label);
   return (
     <View style={styles.container}>
-      <Image style={styles.ingredientImage} source={assetSource} contentFit="cover" />
-      <View >
+      <View style={styles.imageContainer}>
+        <Image
+          style={styles.ingredientImage}
+          source={assetSource}
+          contentFit="cover"
+        />
+      </View>
+      <View>
         <Text>{label}</Text>
         <Text>{quantity}</Text>
       </View>
@@ -22,14 +28,14 @@ export default IngredientCard;
 
 const styles = StyleSheet.create({
     container: {
+    },
+  imageContainer: {
     width: 80,
     height: 80,
-    borderRadius: 16,
-    position: 'relative',
-    overflow: 'hidden',
-  },
-    ingredientImage: {
-    width: '100%',
-    height: '100%',
+},
+ingredientImage: {
+    borderRadius: 15,
+    width: "100%",
+    height: "100%",
   },
 });

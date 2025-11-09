@@ -7,7 +7,6 @@ import IngredientCard from "@/components/IngredientCard";
 
 const SingleRecipeScreen = () => {
   const recipeData = useLocalSearchParams().data as unknown as RECIPE;
-  
   return (
     <View>
       <Text>SingleRecipeScreen</Text>
