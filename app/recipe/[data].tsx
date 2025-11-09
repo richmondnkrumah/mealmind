@@ -2,7 +2,7 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { useLocalSearchParams } from "expo-router";
 import { RECIPE } from "@/constants/types";
-import { dummyNutritionsData } from "@/constants/dummy";
+import { dummyIngredientsData, dummyNutritionsData } from "@/constants/dummy";
 
 const SingleRecipeScreen = () => {
   const recipeData = useLocalSearchParams().data as unknown as RECIPE;
@@ -29,7 +29,7 @@ const SingleRecipeScreen = () => {
         <View>
           <Text>Ingredients</Text>
           <ScrollView horizontal>
-            {recipeData.ingredients.map((ingredient, index) => (
+            {dummyIngredientsData.map((ingredient, index) => (
               <View key={index} style={{ marginRight: 15 }}>
                 <Text>{ingredient}</Text>
               </View>

@@ -8,11 +8,15 @@ export const dummyNutritionsData = [
 ]
 
 export const dummyIngredientsData = [
-  "200g Chicken Breast",
-  "100g Broccoli",
-  "1 cup Rice",
-  "2 tbsp Olive Oil",
-  "Salt and Pepper to taste",
+  "Cabbage",
+  "Lettuce",
+  "Broccoli",
+  "salad",
+  "carrot",
+  "cucumber",
+  "corn",
+  "beet",
+  "celery"
 ];
 export const dummyMealPlanData: DUMMYMEALPLANDATA = {
   plan_data: {
