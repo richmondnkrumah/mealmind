@@ -4,6 +4,7 @@ import { useLocalSearchParams } from "expo-router";
 import { RECIPE } from "@/constants/types";
 import { dummyIngredientsData, dummyNutritionsData } from "@/constants/dummy";
 import IngredientCard from "@/components/IngredientCard";
+import NutritionCard from "@/components/NutritionCard";
 
 const SingleRecipeScreen = () => {
   const recipeData = useLocalSearchParams().data as unknown as RECIPE;
@@ -19,10 +20,7 @@ const SingleRecipeScreen = () => {
           <Text>Nutritions</Text>
           <ScrollView horizontal>
             {dummyNutritionsData.map((nutrition, index) => (
-              <View key={index} style={{ marginRight: 15 }}>
-                <Text>{nutrition.label}</Text>
-                <Text>{nutrition.value}</Text>
-              </View>
+              <NutritionCard quantity={nutrition.quantity} label={nutrition.label} key={index} />
             ))}
           </ScrollView>
         </View>

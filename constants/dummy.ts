@@ -1,10 +1,10 @@
 import { DUMMYMEALPLANDATA } from "./types";
 
 export const dummyNutritionsData = [
-  { label: "Calories", value: "500g" },
-  { label: "Protein", value: "30g" },
-  { label: "Carbo", value: "50g" },
-  { label: "Fats", value: "20g" },
+  { label: "Calories", quantity: "500g" },
+  { label: "Protein", quantity: "30g" },
+  { label: "Carbo", quantity: "50g" },
+  { label: "Fats", quantity: "20g" },
 ]
 
 export const dummyIngredientsData = [

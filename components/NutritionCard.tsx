@@ -1,13 +1,16 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import { getAssetForNutrition } from '@/constants/nutritionAssets';
+import { Image } from 'expo-image';
 
-const NutritionCard = () => {
+const NutritionCard = ({quantity,label}) => {
+    const assetSource = getAssetForNutrition(label);
   return (
     <View>
-      <Text>Protein</Text>
+      <Text>{label}</Text>
       <View>
-        
-        <Text>30g</Text>
+        <Image source={assetSource} style={{width: 40, height: 40}} />
+        <Text>{quantity}</Text>
       </View>
     </View>
   )
@@ -15,4 +18,10 @@ const NutritionCard = () => {
 
 export default NutritionCard
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    innerContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 10,
+    }
+})
