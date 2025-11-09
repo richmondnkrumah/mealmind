@@ -6,6 +6,14 @@ export const dummyNutritionsData = [
   { label: "Carbo", value: "50g" },
   { label: "Fats", value: "20g" },
 ]
+
+export const dummyIngredientsData = [
+  "200g Chicken Breast",
+  "100g Broccoli",
+  "1 cup Rice",
+  "2 tbsp Olive Oil",
+  "Salt and Pepper to taste",
+];
 export const dummyMealPlanData: DUMMYMEALPLANDATA = {
   plan_data: {
     shopping_list: [

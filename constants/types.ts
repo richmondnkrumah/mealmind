@@ -48,6 +48,10 @@ export type PANTRYCARD = {
   ingredient: string
 }
 
+export type INGREDIENTCARD = {
+  ingredient: string,
+  quantity: string
+}
 export type PROFILELINKS = {
   href: any,
   iconName: any,
