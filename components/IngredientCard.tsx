@@ -17,7 +17,7 @@ const IngredientCard = ({ label, quantity }: INGREDIENTCARD) => {
         />
       </View>
       <View>
-        <Text>{label}</Text>
+        <Text style={styles.ingredientTitle}>{label}</Text>
         <Text>{quantity}</Text>
       </View>
     </View>
@@ -27,15 +27,19 @@ const IngredientCard = ({ label, quantity }: INGREDIENTCARD) => {
 export default IngredientCard;
 
 const styles = StyleSheet.create({
-    container: {
-    },
+  container: {},
   imageContainer: {
-    width: 80,
-    height: 80,
-},
-ingredientImage: {
+    width: 70,
+    height: 70,
+  },
+  ingredientImage: {
     borderRadius: 15,
     width: "100%",
     height: "100%",
+  },
+  ingredientTitle: {
+    fontSize: 16,
+    fontWeight: "500",
+    paddingLeft: 3,
   },
 });
