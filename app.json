@@ -13,7 +13,8 @@
     },
     "android": {
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.voidconquest.mealmind"
     },
     "plugins": [
       "expo-router",
@@ -34,6 +35,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "d01dd05f-59e5-44ca-9f6b-1a4b90ac92ac"
+      }
     }
   }
 }
