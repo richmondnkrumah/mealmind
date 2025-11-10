@@ -1,4 +1,5 @@
-export const  PRIMARY = "#CD7926"
+export const  PRIMARY = "#800080"
+export const SECONDARY = "green"
 export const ACCENT = "#FCF5EE"
 export const FADED_WHITE = "#E0E0E0"
 export const FADED_ICON = ""
